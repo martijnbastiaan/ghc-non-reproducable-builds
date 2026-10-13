@@ -1,0 +1,5 @@
+out/
+.tmp/
+clash-prelude-repro/src/
+clash-prelude-repro/autogen/
+clash-prelude-repro/cabal_macros.h

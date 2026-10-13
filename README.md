@@ -276,3 +276,7 @@ that no rule from `A`'s dependencies fires in `B`.
   Both causes were confirmed by adding a module that only contains the
   respective `import` to a `--make` build of the module's dependency closure.
   The clash-prelude also differs without `-fexpose-all-unfoldings`.
+
+  Clash output (Verilog/VHDL) is often fed to Place&Route tooling, which can
+  take multiple hours to run. Ideally, reruns would be prevented by using
+  content addressable caching, but non-determinism stands in the way of this.

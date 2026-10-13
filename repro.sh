@@ -30,9 +30,14 @@ ghcin() {
 
 # unfolding of g in <dir>/B.hi, on one line
 unf() {
-  $GHC --show-iface "$1/B.hi" \
+  local s o c
+  s=$($GHC --show-iface "$1/B.hi" \
     | awk '/^  g ::/{p=1} p && /^[0-9a-f]{32}$/{exit} p' \
-    | tr -s ' \n' ' ' | sed -E 's/.*:: [A-Za-z.]*Int\) -> //; s/\] *$//'
+    | tr -s ' \n' ' ' | sed -E 's/.*:: [A-Za-z.]*Int\) -> //; s/\] *$//')
+  # GHC 9.4 prints the unfolding in parentheses; drop the unmatched ')'
+  o=$(tr -cd '(' <<< "$s" | wc -c); c=$(tr -cd ')' <<< "$s" | wc -c)
+  [ "$c" -gt "$o" ] && s=${s%)}
+  echo "$s"
 }
 
 # --show-iface without hashes and absolute paths
